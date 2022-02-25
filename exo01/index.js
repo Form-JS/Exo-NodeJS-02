@@ -13,6 +13,8 @@ const exo01 = async () => {
 
         const nextValue = await reader.question('Voulez vous continuer (y/N) ?');
         stop = nextValue.toLowerCase() !== 'y';
+
     }
+    reader.close();
 };
 exo01();
