@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 
 
 const getStudentData = () => {
@@ -27,12 +28,33 @@ const getStudentData = () => {
 const exo02 = async () => {
     const data = await getStudentData();
 
-    // const avgSections = getAvgSections1(data);
-    const avgSections = getAvgSections2(data);
+    const avgSections = getAvgSections3(data);
     console.log(avgSections);
 
+    const avgGlobal = getAvgResult2(data);
+    console.log(avgGlobal);
 };
 exo02();
+
+const getAvgResult1 = (data) => {
+    const students = data.results
+        .map(r => r.students)
+        .flat()
+        .filter(s => s.year_result != null);
+
+    const sum = students.reduce((acc, student) => acc + student.year_result, 0);
+    const avg = (Math.round(sum * 100 / students.length) / 100);
+    return avg;
+};
+
+const getAvgResult2 = (data) => {
+    const students = data.results
+        .map(r => r.students)
+        .flat()
+        .filter(s => s.year_result != null);
+
+    return _.round(_.meanBy(students, 'year_result'), 2);
+};
 
 
 const getAvgSections1 = (data) => {
@@ -58,7 +80,6 @@ const getAvgSections1 = (data) => {
     return averageSections;
 };
 
-
 const getAvgSections2 = (data) => {
     const averageSections = [];
 
@@ -79,4 +100,15 @@ const getAvgSections2 = (data) => {
     });
 
     return averageSections;
+};
+
+const getAvgSections3 = (data) => {
+    return data.results.reduce((avgs, result) => {
+        const section = `${result.section.code} - ${result.section.name}`;
+        const students = _.filter(result.students, s => s.year_result != null);
+        const average = _.round(_.meanBy(students, s => s.year_result), 2);
+
+        return [...avgs, { section, average }];
+        // return avgs.concat({ section, average });
+    }, []);
 };
