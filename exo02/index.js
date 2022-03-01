@@ -33,8 +33,39 @@ const exo02 = async () => {
 
     const avgGlobal = getAvgResult2(data);
     console.log(avgGlobal);
+
+    const profs = getProfs2(data);
+    console.log(profs);
+
+    const students = getStudents(data);
+    console.log(students);
 };
 exo02();
+
+const getStudents = (data) => {
+
+    const students = data.results
+        .map(r => r.students)
+        .flat()
+        .map(s => ({ firstname: s.firstname, lastname: s.lastname }));
+    // //  .map(({ firstname, lastname }) => ({ firstname, lastname }));
+
+    // return students;
+};
+
+
+const getProfs1 = (data) => {
+    let profs = [];
+
+    for (const result of data.results) {
+        profs = [...profs, result.professor];
+    }
+
+    return profs;
+};
+
+const getProfs2 = (data) => data.results.map(r => r.professor);
+
 
 const getAvgResult1 = (data) => {
     const students = data.results
