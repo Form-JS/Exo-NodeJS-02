@@ -23,4 +23,6 @@ Objectif :
 __3) Lire le fichier "personnage.json"__
 
 L'objectif est d'obtenir la liste des personnages
+Une fois obtenu, l'enregister dans un fichier JSON.
+
 NB : Le fichier peut évoluer, mais la logique de structure ne change pas!
